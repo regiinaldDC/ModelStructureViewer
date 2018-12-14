@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="603.0" prefWidth="808.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project_innov_controllers.MainController">
+   <children>
+      <TextField fx:id="fileTextField" layoutX="65.0" layoutY="36.0" prefHeight="39.0" prefWidth="296.0" AnchorPane.leftAnchor="65.0" AnchorPane.topAnchor="36.0" />
+      <Button fx:id="fileSelector" layoutX="395.0" layoutY="36.0" mnemonicParsing="false" onAction="#fileSelect" prefHeight="39.0" prefWidth="109.0" text="Open" AnchorPane.leftAnchor="395.0" AnchorPane.topAnchor="36.0" />
+      <Button fx:id="fileLoad" layoutX="518.0" layoutY="36.0" mnemonicParsing="false" onAction="#fileLoad" prefHeight="39.0" prefWidth="109.0" text="Load" AnchorPane.leftAnchor="518.0" AnchorPane.topAnchor="36.0" />
+   </children>
+</AnchorPane>
