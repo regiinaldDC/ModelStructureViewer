@@ -226,7 +226,7 @@ public class MainController implements Initializable {
 				
 				tableViewContainer.getColumns().addAll(groupNameCol, dmiTypeCol, minLenCol, maxLenCol, matchValCol, idVerCol, minOccCol, maxOccCol);
 				
-				for(int i = modelStrucArray.size() - 1; i > 2600; i--) {
+				for(int i = 0; i < modelStrucArray.size() - 1; i++) {
 					ModelStructure modelViewer = modelStrucArray.get(i);
 					System.out.println("GROUPNAME:" + modelViewer.getGroupName() + " DMI TYPE:" + modelViewer.getDmiType() 
 										+ " MinLength:" + modelViewer.getFieldLengthMin() + " MaxLength:" + modelViewer.getFieldLengthMax()
