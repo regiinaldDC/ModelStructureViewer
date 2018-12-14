@@ -13,6 +13,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import project_innov_models.ModelStructure;
@@ -24,6 +27,9 @@ public class MainController implements Initializable {
 	
 	@FXML
 	private Button fileLoad;
+	
+	@FXML
+	private TreeTableView<ModelStructure> tableViewContainer;
 	
 	private File file;
 	private FileChooser fChooser;
@@ -183,8 +189,11 @@ public class MainController implements Initializable {
 							
 
 						} else if (lineData.indexOf("}") == 0) {
-							modStrucArray.remove(modStrucArray.size() - 1);
 							hierarchyCTR--;
+							ModelStructure modifyStruc = modStrucArray.get(modStrucArray.size() - 1);
+							modifyStruc.setHierarchyCTR(hierarchyCTR);
+							modelStrucArray.add(modifyStruc);
+							modStrucArray.remove(modStrucArray.size() - 1);
 						}
 						
 						
@@ -197,15 +206,36 @@ public class MainController implements Initializable {
 				
 				br.close();
 				
-				for(int i = 0; i < modelStrucArray.size() - 1; i++) {
+				TreeTableColumn<ModelStructure, String> groupNameCol = new TreeTableColumn<ModelStructure, String>("Group Name");
+				TreeTableColumn<ModelStructure, String> dmiTypeCol = new TreeTableColumn<ModelStructure, String>("DMI Type");
+				TreeTableColumn<ModelStructure, String> minLenCol = new TreeTableColumn<ModelStructure, String>("Min Length");
+				TreeTableColumn<ModelStructure, String> maxLenCol = new TreeTableColumn<ModelStructure, String>("Max Length");
+				TreeTableColumn<ModelStructure, String> matchValCol = new TreeTableColumn<ModelStructure, String>("Match Value");
+				TreeTableColumn<ModelStructure, String> idVerCol = new TreeTableColumn<ModelStructure, String>("ID Version");
+				TreeTableColumn<ModelStructure, String> minOccCol = new TreeTableColumn<ModelStructure, String>("Min Occurrence");
+				TreeTableColumn<ModelStructure, String> maxOccCol = new TreeTableColumn<ModelStructure, String>("Max Occurrence");
+				
+				groupNameCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("Group Name"));
+				dmiTypeCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("DMI Type"));
+				minLenCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("Min Length"));
+				maxLenCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("Max Length"));
+				matchValCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("Match Value"));
+				idVerCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("ID Version"));
+				minOccCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("Min Occurrence"));
+				maxOccCol.setCellValueFactory(new TreeItemPropertyValueFactory<ModelStructure, String>("Max Occurrence"));
+				
+				tableViewContainer.getColumns().addAll(groupNameCol, dmiTypeCol, minLenCol, maxLenCol, matchValCol, idVerCol, minOccCol, maxOccCol);
+				
+				for(int i = modelStrucArray.size() - 1; i > 2600; i--) {
 					ModelStructure modelViewer = modelStrucArray.get(i);
 					System.out.println("GROUPNAME:" + modelViewer.getGroupName() + " DMI TYPE:" + modelViewer.getDmiType() 
 										+ " MinLength:" + modelViewer.getFieldLengthMin() + " MaxLength:" + modelViewer.getFieldLengthMax()
 										+ " MatchValue:" + modelViewer.getMatchValue() + " IDVersion:" + modelViewer.getIdVersion()
-										+ " MinOcc:" + modelViewer.getMinOcc() + " MaxOcc:" + modelViewer.getMaxOcc());
-					/*(groupName, dmiType, fieldLengthMin, fieldLengthMax, matchValue,
-							idVersion, minOcc, maxOcc, hierarchyCTR);*/
+										+ " MinOcc:" + modelViewer.getMinOcc() + " MaxOcc:" + modelViewer.getMaxOcc() + " Hierarchy: " + modelViewer.getHierarchyCTR());
+					
 				}
+				
+				
 				
 			}catch(Exception e) {
 				e.printStackTrace();
