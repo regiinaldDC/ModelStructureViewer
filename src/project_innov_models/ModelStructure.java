@@ -1,6 +1,6 @@
 package project_innov_models;
 
-public class ModelStructure {
+public class ModelStructure implements Comparable {
 	
 	private String groupName;
 	private String dmiType;
@@ -11,9 +11,10 @@ public class ModelStructure {
 	private String minOcc;
 	private String maxOcc;
 	private int hierarchyCTR;
+	private int totalCTR;
 	
 	public ModelStructure (String groupName, String dmiType, String fieldLengthMin, String fieldLengthMax,
-								String matchValue, String idVersion, String minOcc, String maxOcc, int hierarchyCTR) {
+								String matchValue, String idVersion, String minOcc, String maxOcc, int hierarchyCTR, int totalCTR) {
 		
 		this.groupName = groupName;
 		this.dmiType = dmiType;
@@ -24,6 +25,15 @@ public class ModelStructure {
 		this.minOcc = minOcc;
 		this.maxOcc = maxOcc;
 		this.hierarchyCTR = hierarchyCTR;
+		this.totalCTR = totalCTR;
+	}
+	
+	@Override
+	public int compareTo(Object compareTotalCTR) {
+		// This is needed to sort the Model Structure from Top to Bottom
+		int compare = ((ModelStructure)compareTotalCTR).getTotalCTR();
+		
+		return this.totalCTR-compare;
 	}
 		
 	public String getGroupName() {
@@ -80,5 +90,13 @@ public class ModelStructure {
 	public void setHierarchyCTR(int hierarchyCTR) {
 		this.hierarchyCTR = hierarchyCTR;
 	}
+	public int getTotalCTR() {
+		return totalCTR;
+	}
+	public void setTotalCTR(int totalCTR) {
+		this.totalCTR = totalCTR;
+	}
+	
+	
 
 }

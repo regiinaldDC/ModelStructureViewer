@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -13,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
@@ -47,10 +49,7 @@ public class MainController implements Initializable {
 	}
 	
 	public void fileSelect(ActionEvent ae) {
-		
-//		Node node = (Node) ae.getSource();
-		
-		
+				
 		file = fChooser.showOpenDialog(null);
 		
 		if (file != null) {
@@ -73,6 +72,7 @@ public class MainController implements Initializable {
 				
 				String lineData;
 				int hierarchyCTR = 0;
+				int totalCTR = 0;
 				
 				while ((lineData = br.readLine()) != null) {
 
@@ -139,13 +139,13 @@ public class MainController implements Initializable {
 									tempHolder = tempHolder + 1;
 								}
 								
-								hierarchyCTR++;								
+								hierarchyCTR++;	
+								totalCTR++;
 								ModelStructure modStruc = new ModelStructure(groupName, dmiType, fieldLengthMin, fieldLengthMax, matchValue,
-																					idVersion, minOcc, maxOcc, hierarchyCTR);
+																					idVersion, minOcc, maxOcc, hierarchyCTR, totalCTR);
 																
 								modStrucArray.add(modStruc);
 								
-//								System.out.println(lineData);
 							}
 							
 						}
@@ -206,6 +206,7 @@ public class MainController implements Initializable {
 				
 				br.close();
 				
+				//CREATION OF TABLE AND COLUMN ADDITION
 				TreeTableColumn<ModelStructure, String> groupNameCol = new TreeTableColumn<ModelStructure, String>("Group Name");
 				TreeTableColumn<ModelStructure, String> dmiTypeCol = new TreeTableColumn<ModelStructure, String>("DMI Type");
 				TreeTableColumn<ModelStructure, String> minLenCol = new TreeTableColumn<ModelStructure, String>("Min Length");
@@ -226,12 +227,23 @@ public class MainController implements Initializable {
 				
 				tableViewContainer.getColumns().addAll(groupNameCol, dmiTypeCol, minLenCol, maxLenCol, matchValCol, idVerCol, minOccCol, maxOccCol);
 				
-				for(int i = 0; i < modelStrucArray.size() - 1; i++) {
+				// To sort the Model Structure from Top to Bottom
+				Collections.sort(modelStrucArray);
+				
+				int previousHierarchy = 0;
+				
+				for(int i = 0; i < modelStrucArray.size(); i++) {
 					ModelStructure modelViewer = modelStrucArray.get(i);
 					System.out.println("GROUPNAME:" + modelViewer.getGroupName() + " DMI TYPE:" + modelViewer.getDmiType() 
 										+ " MinLength:" + modelViewer.getFieldLengthMin() + " MaxLength:" + modelViewer.getFieldLengthMax()
 										+ " MatchValue:" + modelViewer.getMatchValue() + " IDVersion:" + modelViewer.getIdVersion()
 										+ " MinOcc:" + modelViewer.getMinOcc() + " MaxOcc:" + modelViewer.getMaxOcc() + " Hierarchy: " + modelViewer.getHierarchyCTR());
+					
+					previousHierarchy = modelViewer.getHierarchyCTR();
+					TreeItem<ModelStructure> itemModStruc = new TreeItem<ModelStructure>(modelViewer);
+					if (previousHierarchy == 0) {
+						tableViewContainer.setRoot(itemModStruc);
+					} 
 					
 				}
 				
